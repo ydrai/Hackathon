@@ -1,11 +1,19 @@
 # aws_client.py
 from boto3.session import Session
-from config import load_config
+import streamlit as st
 import uuid
 
 class AWSClient:
     def __init__(self, session_id=None):
-        self.config = load_config()['Lex']
+        # Utilisation des secrets directement
+        self.config = {
+            'aws_access_key_id': st.secrets.aws_credentials.aws_access_key_id,
+            'aws_secret_access_key': st.secrets.aws_credentials.aws_secret_access_key,
+            'region_name': st.secrets.aws_credentials.region_name,
+            'bot_id': st.secrets.aws_credentials.bot_id,
+            'bot_alias_id': st.secrets.aws_credentials.bot_alias_id,
+            'locale_id': st.secrets.aws_credentials.locale_id
+        }
         self.client = self.create_client()
         self.session_id = session_id if session_id else str(uuid.uuid4())
 
