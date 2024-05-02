@@ -11,7 +11,7 @@ def main():
     if 'client' not in st.session_state:
         st.session_state.client = AWSClient()
     
-    st.sidebar.title("Session Details")
+    st.sidebar.title("Session Details - TESTELIE")
     st.sidebar.write(f"Session ID: {str(st.session_state.client.session_id)[:15]}")
 
     initialize_chat_history()
@@ -39,7 +39,6 @@ def main():
         if uploaded_file is not None:
             bytes_data = uploaded_file.read()
             st.write("filename:", uploaded_file.name)
-            # st.write(type(bytes_data))
 
 if __name__ == "__main__":
     main()
