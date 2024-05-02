@@ -3,7 +3,7 @@ import streamlit as st
 from aws_client import AWSClient
 
 def display_sidebar():
-    st.sidebar.image('aws_icon.png', width=200)
+    st.sidebar.image('ds_team.png', width=200)
     if st.sidebar.button('Reset Chat', use_container_width=True, key='reset_chat_button'):
         from session_state import reset_chat
         reset_chat()
