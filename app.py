@@ -11,7 +11,7 @@ def main():
     if 'client' not in st.session_state:
         st.session_state.client = AWSClient()
     
-    st.sidebar.title("Session Details")
+    st.sidebar.title("Session Details ----------")
     st.sidebar.write(f"Session ID: {str(st.session_state.client.session_id)[:15]}")
 
     initialize_chat_history()
