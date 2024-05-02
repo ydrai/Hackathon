@@ -1,7 +1,7 @@
 # app.py
 import streamlit as st
 from aws_client import AWSClient
-from session_state import initialize_chat_history, add_message, display_chat, reset_chat
+from session_state import initialize_chat_history, add_message, display_chat
 from utils import set_page_layout, display_sidebar
 
 def main():
