@@ -39,7 +39,7 @@ def main():
         if uploaded_file is not None:
             bytes_data = uploaded_file.read()
             st.write("filename:", uploaded_file.name)
-            st.write(type(bytes_data))
+            # st.write(type(bytes_data))
 
 if __name__ == "__main__":
     main()
