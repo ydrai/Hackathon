@@ -54,10 +54,10 @@ def upload_section():
     def display_progress_bar():
         progress_bar = st.progress(0)
         for percent_complete in range(100):
-            time.sleep(0.03)
+            time.sleep(0.01)
             progress_bar.progress(percent_complete + 1)
 
-        st.success('Full loading')
+        st.success('Loading complete')
     
     text_to_find = "Le double de"
     bot_message_found = any(
