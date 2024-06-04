@@ -1,6 +1,7 @@
 from boto3.session import Session
 import streamlit as st
 import uuid
+import json
 
 class AWSClient:
     """
@@ -96,3 +97,54 @@ class AWSClient:
         )
         response_payload = response['Payload'].read()
         return response_payload.decode()
+    
+    def start_step_function_execution(self, state_machine_arn, input_data):
+        """
+        Starts an execution of the specified Step Functions state machine.
+        
+        Args:
+            state_machine_arn (str): The ARN of the Step Functions state machine to start.
+            input_data (dict): The input data for the state machine execution.
+        
+        Returns:
+            dict: The response from the StartExecution API call.
+        
+        Raises:
+            ValueError: If the service name is not 'stepfunctions'.
+        """
+        if self.service_name != 'stepfunctions':
+            raise ValueError("This method is only valid for Step Functions service.")
+        response = self.client.start_execution(
+            stateMachineArn=st.secrets.aws_credentials["state_machine_arn"],
+            # state_machine_arn,
+            input=json.dumps(input_data)
+        )
+        return response
+
+def create_client():
+    """
+    Creates and stores an AWSClient instance in the session state if it doesn't already exist.
+    This function ensures that a client instance is available throughout the app's session.
+    """
+    if 'client' not in st.session_state:
+        st.session_state['client'] = AWSClient()
+    
+def send_lex_message(message):
+    try:
+        bot_response = st.session_state.client.send_lex_message(message)
+        hebrew_question = st.session_state.hebrew_questions.get(bot_response, bot_response)
+        return hebrew_question
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+        return "Bot finished"
+
+def invoke_lambda(function_name, payload):
+    """
+    Invokes an AWS Lambda function with the specified function name and payload.
+    """
+    try:
+        lambda_response = st.session_state.client.invoke_lambda(function_name, payload)
+        return lambda_response
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+        return "Lambda invocation failed"
