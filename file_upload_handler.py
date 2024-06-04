@@ -55,7 +55,6 @@ def handle_file_upload():
                 st.json(entity_extraction)
             else:
                 st.write("לא אישרת את המידע.")
-                st.text(extract_user_data(st.session_state.chat_history))
 
 def extract_user_data(chat_history):
     """

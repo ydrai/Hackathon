@@ -88,6 +88,3 @@ def display_chat():
                 f'<div style="background-color: {background_color}; {bubble_style} text-align: {align}; direction: rtl; color: {text_color};">{message}<span style="{pointer_style}"></span></div>',
                 unsafe_allow_html=True
             )
-
-        # Ajout d'un espace entre les messages
-        # st.markdown('<div style="margin-bottom: 10px;"></div>', unsafe_allow_html=True)
