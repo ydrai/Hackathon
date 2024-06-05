@@ -40,6 +40,18 @@ def handle_file_upload():
         image.save(buffer, format="PNG")
         return buffer.getvalue()
     
+    def resize_image(image_data, max_size=(1024, 1024)):
+        """
+        Resizes an image to ensure it meets the size constraints.
+        """
+        image = Image.open(io.BytesIO(image_data))
+        image = image.convert('RGBA')
+        image.thumbnail(max_size)
+        buffer = io.BytesIO()
+        # image.save(buffer, format="JPEG")
+        image.save(buffer, format="PNG")
+        return buffer.getvalue()
+    
     text_to_find = "נא להעלות את המסמך..."
     bot_message_found = any(
         speaker == 'בוט' and message.startswith(text_to_find)
