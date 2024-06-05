@@ -2,4 +2,3 @@ boto3
 pandas
 openpyxl
 Pillow==9.5.0
-io
