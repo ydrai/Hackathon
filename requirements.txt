@@ -1,5 +1,5 @@
 boto3
 pandas
 openpyxl
-PIL
+Pillow==9.5.0
 io
