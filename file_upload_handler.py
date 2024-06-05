@@ -76,7 +76,7 @@ def handle_file_upload():
                     time.sleep(3)
                     file_data = resize_image(file_data)
                     base64_string = convert_uploaded_file_to_base64(file_data)
-                    if len(base64_string) > 262144:
+                    if len(base64_string) > 262144 or len(base64_string) == 0:
                         st.error("לא ניתן לדחוס את התמונה לגודל המתאים")
                         return
                     else:
