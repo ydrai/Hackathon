@@ -49,7 +49,7 @@ def handle_file_upload():
         image.thumbnail(max_size)
         buffer = io.BytesIO()
         # image.save(buffer, format="JPEG")
-        # image.save(buffer, format="PNG")
+        image.save(buffer, format="PNG")
         return buffer.getvalue()
     
     text_to_find = "נא להעלות את המסמך..."
