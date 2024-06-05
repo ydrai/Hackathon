@@ -10,7 +10,8 @@ def handle_user_input():
     Ensures the user enters an ID number before proceeding.
     """
     if not st.session_state.chat_blocked:
-        user_input = st.chat_input("Say something...")
+        user_input = st.chat_input("תגיד/י משהו...")
+        
         if user_input:
             if st.session_state.get('awaiting_id_number', False):
                 cleaned_id = clean_id_number(user_input)
@@ -63,28 +64,81 @@ def display_chat():
     """
     # Utilisation d'un conteneur pour organiser le chat
     chat_container = st.container()
-    
+
+    # Styles CSS pour une meilleure ambiance de chat
+    st.markdown(
+        """
+        <style>
+        .chat-bubble {
+            border-radius: 20px;
+            padding: 10px;
+            margin: 10px 0;
+            position: relative;
+            max-width: 60%;
+            display: inline-block;
+            direction: rtl; /* Alignement du texte de droite à gauche */
+        }
+        .chat-bubble.bot {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 2px solid #999;
+            text-align: right;
+            margin-right: auto; /* Alignement des bulles à gauche */
+        }
+        .chat-bubble.user {
+            background-color: #d9edf7;
+            color: #31708f;
+            border: 2px solid #5bc0de;
+            text-align: right;
+            margin-left: auto; /* Alignement des bulles à droite */
+        }
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+        }
+        .chat-bubble.bot::after {
+            border-right-color: #999;
+            right: 100%;
+            margin-top: -10px;
+        }
+        .chat-bubble.user::after {
+            border-left-color: #5bc0de;
+            left: 100%;
+            margin-top: -10px;
+        }
+        .chat-message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            direction: rtl; /* Alignement du texte de droite à gauche */
+        }
+        .chat-message.bot {
+            justify-content: flex-start; /* Alignement des messages du bot à gauche */
+        }
+        .chat-message.user {
+            justify-content: flex-end; /* Alignement des messages de l'utilisateur à droite */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # Boucle sur chaque message du chat
     for role, message in st.session_state.chat_history:
-        # Styles différents selon le rôle
-        if role == "בוט":
-            background_color = "#f0f0f0"
-            text_color = "#333333"
-            align = "left"
-            role_text_style = "font-size: larger;"
-            bubble_style = "border: 2px solid #999999; border-radius: 10px; padding: 10px; margin: 5px; position: relative;"
-            pointer_style = "content: ''; position: absolute; top: 50%; right: 100%; border: 10px solid transparent; border-right-color: #999999;"
-        else:
-            background_color = "#d9edf7"
-            text_color = "#31708f"
-            align = "right"
-            role_text_style = "font-size: larger;"
-            bubble_style = "border: 2px solid #5bc0de; border-radius: 10px; padding: 10px; margin: 5px; position: relative;"
-            pointer_style = "content: ''; position: absolute; top: 50%; left: 100%; border: 10px solid transparent; border-left-color: #5bc0de;"
+        message_alignment = "bot" if role == "בוט" else "user"
 
-        # Affichage du message avec le rôle et le message
         with chat_container:
             st.markdown(
-                f'<div style="background-color: {background_color}; {bubble_style} text-align: {align}; direction: rtl; color: {text_color};">{message}<span style="{pointer_style}"></span></div>',
+                f"""
+                <div class="chat-message {message_alignment}">
+                    <div class="chat-bubble {message_alignment}">
+                        {message}
+                    </div>
+                </div>
+                """,
                 unsafe_allow_html=True
             )

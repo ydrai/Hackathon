@@ -20,9 +20,9 @@ def restart_chat():
     """
     text_to_find = "אין בעיה, נתחיל שוב..."
     if st.session_state.get('chat_history') and st.session_state['chat_history'][-1][0] == 'בוט' and text_to_find in st.session_state['chat_history'][-1][1]:
-        if st.button("אוקאי ?"):
+        if st.button("אוקיי ?"):
             try:
-                add_message("משתמש", "אוקאי")
+                add_message("משתמש", "אוקיי")
                 bot_response = send_lex_message("Ok")
                 add_message("בוט", bot_response)
                 st.experimental_rerun()

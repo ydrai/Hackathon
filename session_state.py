@@ -3,13 +3,13 @@ from utils import load_hebrew_questions
 
 def initialize_chat_history():
     """
-    Initializes the chat history and other session state variables.
+    Initializes the session state variables.
     """
     if 'chat_history' not in st.session_state:
         st.session_state.chat_history = []
 
     if not st.session_state['chat_history']:
-        add_message("בוט", "היי, אני הבוט שיעזור לך לקבל חזרה את המיסים המיותרים ששילמת עבור ההזמנות שלך.  \nבשביל זה אני אשאל אותך כמה שאלות, בסדר?")
+        add_message("בוט", "היי, אני הבוט שיעזור לך לקבל חזרה את המיסים המיותרים ששילמת עבור ההזמנות שלך. בשביל זה אני אשאל אותך כמה שאלות, בסדר?")
 
     if 'first_response_analyzed' not in st.session_state:
         st.session_state.first_response_analyzed = False
@@ -30,6 +30,18 @@ def initialize_chat_history():
         hebrew_questions = load_hebrew_questions("Hebrew_Questions.xlsx")
         st.session_state.hebrew_questions = hebrew_questions
 
+    if 'chat_input' not in st.session_state:
+        st.session_state.chat_input = ''
+
+    if 'selected_currency' not in st.session_state:
+        st.session_state.selected_currency = 'USD'
+
+    if 'client' not in st.session_state:
+        st.session_state.client = None
+
+    if 'confirm_clicked' not in st.session_state:
+        st.session_state.confirm_clicked = False
+
 def add_message(role, message):
     """
     Adds a message to the chat history in the session state.
@@ -49,11 +61,17 @@ def display_chat():
 
 def reset_chat():
     """
-    Resets the chat history and other session state variables.
+    Resets all session state variables.
     """
     st.session_state.chat_history = []
     st.session_state.first_response_analyzed = False
     st.session_state.chat_blocked = False
+    st.session_state.restart_triggered = False
     st.session_state.user_data = {}
     st.session_state.awaiting_id_number = False
+    st.session_state.hebrew_questions = load_hebrew_questions("Hebrew_Questions.xlsx")
+    st.session_state.chat_input = ''
+    st.session_state.selected_currency = 'USD'
+    st.session_state.client = None
+    st.session_state.confirm_clicked = False
     display_chat()

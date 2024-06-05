@@ -38,14 +38,14 @@ def handle_currency_selection():
     if st.session_state.get('awaiting_user_confirmation'):
         col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns(10)
         with col5:
-            if st.button("כן"):
+            if st.button('כן ✅'):
                 add_message("משתמש", "כן")
                 st.session_state.awaiting_user_confirmation = False  # Réinitialiser l'état
                 bot_response = send_lex_message("Yes")
                 add_message("בוט", bot_response)
                 st.experimental_rerun()
         with col6:  
-            if st.button("לא"):
+            if st.button('לא ❌'):
                 add_message("משתמש", "לא")
                 st.session_state.awaiting_user_confirmation = False  # Réinitialiser l'état
                 bot_response = send_lex_message("No")
