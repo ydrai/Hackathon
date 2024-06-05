@@ -112,7 +112,8 @@ def handle_file_upload():
                     except Exception as e:
                         st.session_state.confirm_clicked = False
                         st.session_state['uploaded_file'] = None
-                        add_message("בוט", "גודל של התמונה גדול מידי, נא לבחור בתמונה ששוקלת פחות.")
+                        # add_message("בוט", "גודל של התמונה גדול מידי, נא לבחור בתמונה ששוקלת פחות.")
+                        st.error("בוט", "גודל של התמונה גדול מידי, נא לבחור בתמונה ששוקלת פחות.")
                         st.experimental_rerun()
                 elif deny:
                     st.session_state.confirm_clicked = False  # Désactiver les boutons après clic
