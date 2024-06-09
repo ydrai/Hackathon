@@ -6,6 +6,7 @@ from currency_handler import handle_currency_selection
 from aws_interaction import create_client
 from utils import set_page_layout, display_sidebar, load_hebrew_questions
 from session_state import initialize_chat_history
+from send_request_shaar_olami import send_request
 
 def main():
     """
@@ -27,23 +28,8 @@ def main():
     display_chat()    
     handle_currency_selection()
     handle_file_upload()
+    send_request()
     restart_chat()
 
 if __name__ == "__main__":
     main()
-
-# import streamlit as st
-# import base64
-# def convert_uploaded_file_to_base64(uploaded_file):
-#         """
-#         Converts a Streamlit UploadedFile object to a Base64 string.
-#         """
-#         uploaded_file.seek(0)
-#         file_data = uploaded_file.read()
-#         return base64.b64encode(file_data).decode('utf-8')
-
-# uploaded_file = st.file_uploader("העלת תמונה...", type=["pdf", "jpg", "jpeg", "png", "tif", "tiff"])
-
-# if uploaded_file is not None:
-#     base64_string = convert_uploaded_file_to_base64(uploaded_file)
-#     st.text(base64_string)

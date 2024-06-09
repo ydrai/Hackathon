@@ -58,6 +58,30 @@ def first_response_analysis(user_input):
             st.error(f"An error occurred: {str(e)}")
             add_message("בוט", "Bot finished")
 
+def scroll_to_bottom():
+    """
+    Inject JavaScript to scroll the page to the bottom.
+    """
+    st.markdown(
+        """
+        <script>
+        window.scrollTo(0,document.body.scrollHeight);
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
+
+def clean_text(text):
+    """
+    Clean the text by removing unwanted spaces around punctuation.
+    """
+    import re
+    # Remove unwanted spaces around punctuation
+    text = re.sub(r'\s+([.,?!])', r'\1', text)  # Remove space before punctuation
+    text = re.sub(r'([.,?!])\s+', r'\1 ', text)  # Ensure single space after punctuation
+    return text
+
+# Modifier la fonction display_chat pour nettoyer les messages avant de les afficher
 def display_chat():
     """
     Displays the chat history in a visually appealing way in the Streamlit interface.
@@ -130,13 +154,14 @@ def display_chat():
     # Boucle sur chaque message du chat
     for role, message in st.session_state.chat_history:
         message_alignment = "bot" if role == "בוט" else "user"
+        cleaned_message = clean_text(message)
 
         with chat_container:
             st.markdown(
                 f"""
                 <div class="chat-message {message_alignment}">
                     <div class="chat-bubble {message_alignment}">
-                        {message}
+                        {cleaned_message}
                     </div>
                 </div>
                 """,

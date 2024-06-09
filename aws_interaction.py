@@ -253,10 +253,10 @@ class AWSClient:
     def get_step_function_output(self, execution_arn):
         """
         Retrieves the output of the specified Step Function execution.
-        
+
         Args:
             execution_arn (str): The ARN of the Step Function execution.
-        
+
         Returns:
             list: The filtered output of the Step Function execution.
         """
@@ -269,11 +269,11 @@ class AWSClient:
                 if status == 'SUCCEEDED':
                     output = json.loads(response['output'])
                     return [
-                        {'deal_text_generation': item['deal_text_generation']}
+                        {'statusCode': item['statusCode'], 'text_translated': item.get('text_translated', '')}
                         for item in output
-                        if 'deal_text_generation' in item
+                        if 'text_translated' in item
                     ] + [
-                        {'dict_text_generated': item['dict_text_generated']}
+                        {'statusCode': item['statusCode'], 'dict_text_generated': item.get('dict_text_generated', '')}
                         for item in output
                         if 'dict_text_generated' in item
                     ]

@@ -42,6 +42,9 @@ def initialize_chat_history():
     if 'confirm_clicked' not in st.session_state:
         st.session_state.confirm_clicked = False
 
+    if 'generated_text' not in st.session_state:
+        st.session_state.generated_text = False
+
 def add_message(role, message):
     """
     Adds a message to the chat history in the session state.
@@ -74,4 +77,5 @@ def reset_chat():
     st.session_state.selected_currency = 'USD'
     st.session_state.client = None
     st.session_state.confirm_clicked = False
+    st.session_state.generated_text = False
     display_chat()

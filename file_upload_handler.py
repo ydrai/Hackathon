@@ -48,7 +48,6 @@ def handle_file_upload():
         image = image.convert('RGBA')
         image.thumbnail(max_size)
         buffer = io.BytesIO()
-        # image.save(buffer, format="JPEG")
         image.save(buffer, format="PNG")
         return buffer.getvalue()
     
@@ -72,20 +71,21 @@ def handle_file_upload():
                 
                 # Check size after base64 encoding
                 if len(base64_string) > 262144:
-                    st.warning('גודל הקובץ גדול מדי. מנסים לדחוס את התמונה...')
-                    time.sleep(3)
+                    # st.warning('גודל הקובץ גדול מדי. מנסים לדחוס את התמונה...')
+                    time.sleep(1)
                     file_data = resize_image(file_data)
                     base64_string = convert_uploaded_file_to_base64(file_data)
                     if len(base64_string) > 262144 or len(base64_string) == 0:
                         st.error("לא ניתן לדחוס את התמונה לגודל המתאים")
                         return
                     else:
-                        st.info('התמונה נדחסה')
-                        time.sleep(2)
+                        # st.info('התמונה נדחסה')
+                        time.sleep(0.1)
                 
                 st.session_state.uploaded_file = base64_string  # Stocker l'image encodée en base64 dans l'état de session
                 st.markdown('---')
-                st.write("האם אתה מאשר את המידע שהוזן?")
+                
+                st.write('האם אתה מאשר לשלוח את המסמך לניתוח מעמיק ע"י מערכת של המכס?')
 
                 # Créez les colonnes pour les boutons
                 col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns(10)
@@ -97,22 +97,24 @@ def handle_file_upload():
                 if confirm:
                     st.session_state.confirm_clicked = True  # Désactiver les boutons après clic
                     add_message("משתמש", "כן")
-                    st.write("אישרת את המידע.")
                     display_progress_bar()
                     
                     st.session_state['client'] = AWSClient(service_name='stepfunctions')
                     try:
                         result = start_step_function(st.secrets.aws_credentials["state_machine_arn"], {"image": st.session_state.uploaded_file})
-
-                        deal_text_generation = result[0]["deal_text_generation"]
+                        deal_text_generation = result[0]["text_translated"]
                         dict_text_generated  = result[1]["dict_text_generated"]
 
                         add_message("בוט", deal_text_generation)
+                        st.session_state.chat_blocked = True
+                        st.session_state.generated_text = True
+
+                        add_message("בוט", 'בהתאם לניתוח של המסמך שהעלאת, האם אתה רוצה לשלוח פנייה למכס להחזר מסים?')
+                        
                         st.experimental_rerun()
                     except Exception as e:
                         st.session_state.confirm_clicked = False
                         st.session_state['uploaded_file'] = None
-                        # add_message("בוט", "גודל של התמונה גדול מידי, נא לבחור בתמונה ששוקלת פחות.")
                         st.error("גודל של התמונה גדול מידי, נא לבחור בתמונה ששוקלת פחות.")
                         st.experimental_rerun()
                 elif deny:
@@ -120,6 +122,7 @@ def handle_file_upload():
                     add_message("משתמש", "לא")
                     st.write("לא אישרת את המידע.")
                     st.experimental_rerun()
+                
             except Exception as e:
                 st.write(f"שגיאה: {str(e)}")
                 st.session_state.uploaded_file = None  # Supprimer le fichier téléchargé
